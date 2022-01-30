@@ -1,0 +1,37 @@
+cargo-features = ["strip"]
+
+[package]
+name = "esp32-mqtt-example"
+version = "0.1.0"
+authors = ["Anthony Canino <git@anthonycanino.com>"]
+edition = "2021"
+
+[profile.release]
+opt-level = "s"
+debug = false
+panic = "abort"
+strip = true
+lto = true
+codegen-units = 1
+
+[profile.dev]
+debug = true # Symbols are nice and they don't increase the size on Flash
+opt-level = "z"
+
+[features]
+native = ["esp-idf-sys/native"]
+experimental = ["esp-idf-svc/experimental", "embedded-svc/experimental", "esp-idf-hal/experimental"]
+default = ["native", "experimental"]
+
+[dependencies]
+anyhow = "1.0.53"
+embedded-hal = "^0.2.6"
+embedded-svc = "^0.16.3"
+esp-idf-hal = "^0.32.4"
+esp-idf-svc = "^0.36.3"
+esp-idf-sys = { version = "^0.30", features = ["binstart"] }
+log = "0.4.14"
+
+[build-dependencies]
+embuild = "^0.28"
+anyhow = "^1"
